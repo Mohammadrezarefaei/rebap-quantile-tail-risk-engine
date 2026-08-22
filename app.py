@@ -17,15 +17,15 @@ st.set_page_config(
 st.markdown("""
 <style>
     div[data-testid="stMetric"] {
-        background-color: #0b1329;
-        border: 1.5px solid #2563eb;
+        background-color: #050b1f;
+        border: 2px solid #0055ff;
         padding: 16px 20px;
         border-radius: 10px;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 4px 14px rgba(0, 85, 255, 0.25);
     }
     div[data-testid="stMetricLabel"] {
-        color: #93c5fd;
-        font-size: 0.88rem;
+        color: #ffffff;
+        font-size: 0.9rem;
         font-weight: 600;
     }
     div[data-testid="stMetricValue"] {
@@ -34,7 +34,7 @@ st.markdown("""
         font-weight: 700;
     }
     hr {
-        border-top: 1px solid #1e3a8a;
+        border-top: 1px solid #0044ff;
         margin: 25px 0;
     }
 </style>
@@ -45,7 +45,7 @@ st.markdown("""
 # ---------------------------------------------------------
 st.title("⚡ Quantile reBAP Forecaster & Tail-Risk Engine")
 st.markdown(
-    "<p style='color: #94a3b8; font-size: 1.05rem; margin-top: -10px;'>"
+    "<p style='color: #cbd5e1; font-size: 1.05rem; margin-top: -10px;'>"
     "Stress-testing Day-Ahead scheduling error distributions against extreme German "
     "<b style='color: #f59e0b;'>reBAP settlement spikes</b> using <b>CVaR (Conditional Value at Risk)</b>."
     "</p>",
@@ -128,24 +128,24 @@ col4.metric(f"CVaR (Tail Risk @ {int(confidence_level*100)}%)", f"€{risk_stats
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# Solid Blue Legend & Blue Hover Tooltip Styles
+# Pure Blue (آبی خالص و پررنگ) Legend & Tooltip Styling
 # ---------------------------------------------------------
-solid_blue_legend = dict(
+pure_blue_legend = dict(
     orientation="h",
     yanchor="bottom",
     y=1.05,
     xanchor="right",
     x=1.0,
-    bgcolor="#172554",          # Solid rich Navy Blue
-    bordercolor="#38bdf8",      # Bright Cyan / Blue outline
+    bgcolor="#003cd2",        # Pure Royal Blue (توش آبی خالص)
+    bordercolor="#ffffff",    # Solid White Border
     borderwidth=2,
-    font=dict(color="#ffffff", size=12, family="sans-serif")
+    font=dict(color="#ffffff", size=12, family="Arial, sans-serif")
 )
 
-blue_hoverlabel = dict(
-    bgcolor="#1e3a8a",          # Solid Dark Blue tooltip background
-    bordercolor="#60a5fa",      # Light Blue border
-    font=dict(color="#ffffff", size=13, family="sans-serif")
+pure_blue_hover = dict(
+    bgcolor="#002db3",        # Pure Solid Blue Tooltip Background
+    bordercolor="#ffffff",    # Crisp White Border
+    font=dict(color="#ffffff", size=13, family="Arial, sans-serif")
 )
 
 # ---------------------------------------------------------
@@ -160,7 +160,7 @@ fig1.add_trace(go.Scatter(
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=p10_schedule, line=dict(width=0),
-    fill="tonexty", fillcolor="rgba(59, 130, 246, 0.28)",
+    fill="tonexty", fillcolor="rgba(0, 85, 255, 0.35)",
     name="P10-P90 Quantile Band"
 ))
 fig1.add_trace(go.Scatter(
@@ -169,17 +169,17 @@ fig1.add_trace(go.Scatter(
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=p50_schedule, mode="lines",
-    name="P50 DA Schedule (GW)", line=dict(color="#60a5fa", dash="dash", width=2.0)
+    name="P50 DA Schedule (GW)", line=dict(color="#3b82f6", dash="dash", width=2.0)
 ))
 
 fig1.update_layout(
     template="plotly_dark",
-    plot_bgcolor="#0b0f19",
-    paper_bgcolor="#0b0f19",
+    plot_bgcolor="#060913",
+    paper_bgcolor="#060913",
     height=420,
     margin=dict(l=20, r=20, t=65, b=20),
-    legend=solid_blue_legend,
-    hoverlabel=blue_hoverlabel,
+    legend=pure_blue_legend,
+    hoverlabel=pure_blue_hover,
     xaxis=dict(gridcolor="#1e293b", title="Timeline"),
     yaxis=dict(gridcolor="#1e293b", title="Power [GW]"),
     hovermode="x unified"
@@ -199,7 +199,7 @@ fig2 = make_subplots(
 fig2.add_trace(
     go.Bar(
         x=time_index, y=df_sim["cash_penalty_eur"],
-        name="Cash Penalty (€)", marker_color="#f43f5e", opacity=0.85
+        name="Cash Penalty (€)", marker_color="#ef4444", opacity=0.9
     ),
     row=1, col=1
 )
@@ -221,12 +221,12 @@ fig2.add_trace(
 
 fig2.update_layout(
     template="plotly_dark",
-    plot_bgcolor="#0b0f19",
-    paper_bgcolor="#0b0f19",
+    plot_bgcolor="#060913",
+    paper_bgcolor="#060913",
     height=520,
     margin=dict(l=20, r=20, t=65, b=20),
-    legend=solid_blue_legend,
-    hoverlabel=blue_hoverlabel,
+    legend=pure_blue_legend,
+    hoverlabel=pure_blue_hover,
     hovermode="x unified"
 )
 fig2.update_xaxes(gridcolor="#1e293b")
