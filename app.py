@@ -13,37 +13,37 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling for Crisp Dark-Mode UI
+# Custom Styling: Crisp Dark UI with Blue Accents
 st.markdown("""
 <style>
-    /* Metric Card Styling */
+    /* Metric Card Styling with Blue Borders */
     div[data-testid="stMetric"] {
-        background-color: #131722;
-        border: 1px solid #2a2e39;
+        background-color: #0b1329;
+        border: 1.5px solid #2563eb;
         padding: 16px 20px;
         border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
     }
     div[data-testid="stMetricLabel"] {
-        color: #9ca3af;
+        color: #93c5fd;
         font-size: 0.88rem;
-        font-weight: 500;
+        font-weight: 600;
     }
     div[data-testid="stMetricValue"] {
-        color: #f3f4f6;
+        color: #ffffff;
         font-size: 1.6rem;
         font-weight: 700;
     }
     /* Section Divider */
     hr {
-        border-top: 1px solid #2a2e39;
+        border-top: 1px solid #1e3a8a;
         margin: 25px 0;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# Title & Subheader
+# Title & Description
 # ---------------------------------------------------------
 st.title("⚡ Quantile reBAP Forecaster & Tail-Risk Engine")
 st.markdown(
@@ -130,6 +130,21 @@ col4.metric(f"CVaR (Tail Risk @ {int(confidence_level*100)}%)", f"€{risk_stats
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
+# Reusable Blue-Themed Legend Configuration
+# ---------------------------------------------------------
+blue_legend_style = dict(
+    orientation="h",
+    yanchor="bottom",
+    y=1.03,
+    xanchor="right",
+    x=1,
+    bgcolor="rgba(11, 24, 52, 0.95)",  # Deep navy background
+    bordercolor="#3b82f6",             # Crisp Electric Blue Border
+    borderwidth=1.5,
+    font=dict(color="#f8fafc", size=11, family="sans-serif")
+)
+
+# ---------------------------------------------------------
 # Plot 1: Dispatch vs Quantile Bands
 # ---------------------------------------------------------
 st.markdown("#### 1. Day-Ahead Dispatch vs. Probabilistic Quantile Bounds (P10 - P90)")
@@ -141,12 +156,12 @@ fig1.add_trace(go.Scatter(
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=p10_schedule, line=dict(width=0),
-    fill="tonexty", fillcolor="rgba(59, 130, 246, 0.22)",
+    fill="tonexty", fillcolor="rgba(59, 130, 246, 0.25)",
     name="P10-P90 Quantile Band"
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=actual_demand, mode="lines",
-    name="Actual Grid Demand (GW)", line=dict(color="#f8fafc", width=2.2)
+    name="Actual Grid Demand (GW)", line=dict(color="#ffffff", width=2.2)
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=p50_schedule, mode="lines",
@@ -155,14 +170,11 @@ fig1.add_trace(go.Scatter(
 
 fig1.update_layout(
     template="plotly_dark",
-    plot_bgcolor="#0f172a",
-    paper_bgcolor="#0f172a",
-    height=380,
-    margin=dict(l=20, r=20, t=30, b=20),
-    legend=dict(
-        orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
-        bgcolor="rgba(15, 23, 42, 0.8)", bordercolor="#334155", borderwidth=1
-    ),
+    plot_bgcolor="#0b0f19",
+    paper_bgcolor="#0b0f19",
+    height=400,
+    margin=dict(l=20, r=20, t=45, b=20),
+    legend=blue_legend_style,
     xaxis=dict(gridcolor="#1e293b", title="Timeline"),
     yaxis=dict(gridcolor="#1e293b", title="Power [GW]"),
     hovermode="x unified"
@@ -170,16 +182,15 @@ fig1.update_layout(
 st.plotly_chart(fig1, use_container_width=True)
 
 # ---------------------------------------------------------
-# Plot 2: Subplots for Cash Penalties & reBAP Spikes (Clear Separation)
+# Plot 2: Subplots for Cash Penalties & reBAP Spikes
 # ---------------------------------------------------------
 st.markdown("#### 2. reBAP Settlement Spikes & Resulting Financial Cash Drawdowns")
 
 fig2 = make_subplots(
-    rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.08,
-    subplot_titles=("Financial Cash Penalty (€) per Settlement Period", "reBAP vs. Day-Ahead Electricity Price (€/MWh)")
+    rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.10,
+    subplot_titles=("Financial Cash Penalty (€) per Settlement Period", "reBAP vs. Day-Ahead Spot Price (€/MWh)")
 )
 
-# Top Subplot: Cash Penalties
 fig2.add_trace(
     go.Bar(
         x=time_index, y=df_sim["cash_penalty_eur"],
@@ -188,7 +199,6 @@ fig2.add_trace(
     row=1, col=1
 )
 
-# Bottom Subplot: Market Prices
 fig2.add_trace(
     go.Scatter(
         x=time_index, y=rebap_price,
@@ -206,14 +216,11 @@ fig2.add_trace(
 
 fig2.update_layout(
     template="plotly_dark",
-    plot_bgcolor="#0f172a",
-    paper_bgcolor="#0f172a",
-    height=480,
-    margin=dict(l=20, r=20, t=40, b=20),
-    legend=dict(
-        orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
-        bgcolor="rgba(15, 23, 42, 0.8)", bordercolor="#334155", borderwidth=1
-    ),
+    plot_bgcolor="#0b0f19",
+    paper_bgcolor="#0b0f19",
+    height=500,
+    margin=dict(l=20, r=20, t=50, b=20),
+    legend=blue_legend_style,
     hovermode="x unified"
 )
 fig2.update_xaxes(gridcolor="#1e293b")
