@@ -13,16 +13,15 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling: Crisp Dark UI with Blue Accents
+# Custom Styling
 st.markdown("""
 <style>
-    /* Metric Card Styling with Blue Borders */
     div[data-testid="stMetric"] {
         background-color: #0b1329;
         border: 1.5px solid #2563eb;
         padding: 16px 20px;
         border-radius: 10px;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
     }
     div[data-testid="stMetricLabel"] {
         color: #93c5fd;
@@ -34,7 +33,6 @@ st.markdown("""
         font-size: 1.6rem;
         font-weight: 700;
     }
-    /* Section Divider */
     hr {
         border-top: 1px solid #1e3a8a;
         margin: 25px 0;
@@ -130,18 +128,24 @@ col4.metric(f"CVaR (Tail Risk @ {int(confidence_level*100)}%)", f"€{risk_stats
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# Reusable Blue-Themed Legend Configuration
+# Solid Blue Legend & Blue Hover Tooltip Styles
 # ---------------------------------------------------------
-blue_legend_style = dict(
+solid_blue_legend = dict(
     orientation="h",
     yanchor="bottom",
-    y=1.03,
+    y=1.05,
     xanchor="right",
-    x=1,
-    bgcolor="rgba(11, 24, 52, 0.95)",  # Deep navy background
-    bordercolor="#3b82f6",             # Crisp Electric Blue Border
-    borderwidth=1.5,
-    font=dict(color="#f8fafc", size=11, family="sans-serif")
+    x=1.0,
+    bgcolor="#172554",          # Solid rich Navy Blue
+    bordercolor="#38bdf8",      # Bright Cyan / Blue outline
+    borderwidth=2,
+    font=dict(color="#ffffff", size=12, family="sans-serif")
+)
+
+blue_hoverlabel = dict(
+    bgcolor="#1e3a8a",          # Solid Dark Blue tooltip background
+    bordercolor="#60a5fa",      # Light Blue border
+    font=dict(color="#ffffff", size=13, family="sans-serif")
 )
 
 # ---------------------------------------------------------
@@ -156,12 +160,12 @@ fig1.add_trace(go.Scatter(
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=p10_schedule, line=dict(width=0),
-    fill="tonexty", fillcolor="rgba(59, 130, 246, 0.25)",
+    fill="tonexty", fillcolor="rgba(59, 130, 246, 0.28)",
     name="P10-P90 Quantile Band"
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=actual_demand, mode="lines",
-    name="Actual Grid Demand (GW)", line=dict(color="#ffffff", width=2.2)
+    name="Actual Grid Demand (GW)", line=dict(color="#ffffff", width=2.4)
 ))
 fig1.add_trace(go.Scatter(
     x=time_index, y=p50_schedule, mode="lines",
@@ -172,9 +176,10 @@ fig1.update_layout(
     template="plotly_dark",
     plot_bgcolor="#0b0f19",
     paper_bgcolor="#0b0f19",
-    height=400,
-    margin=dict(l=20, r=20, t=45, b=20),
-    legend=blue_legend_style,
+    height=420,
+    margin=dict(l=20, r=20, t=65, b=20),
+    legend=solid_blue_legend,
+    hoverlabel=blue_hoverlabel,
     xaxis=dict(gridcolor="#1e293b", title="Timeline"),
     yaxis=dict(gridcolor="#1e293b", title="Power [GW]"),
     hovermode="x unified"
@@ -187,7 +192,7 @@ st.plotly_chart(fig1, use_container_width=True)
 st.markdown("#### 2. reBAP Settlement Spikes & Resulting Financial Cash Drawdowns")
 
 fig2 = make_subplots(
-    rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.10,
+    rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.12,
     subplot_titles=("Financial Cash Penalty (€) per Settlement Period", "reBAP vs. Day-Ahead Spot Price (€/MWh)")
 )
 
@@ -218,9 +223,10 @@ fig2.update_layout(
     template="plotly_dark",
     plot_bgcolor="#0b0f19",
     paper_bgcolor="#0b0f19",
-    height=500,
-    margin=dict(l=20, r=20, t=50, b=20),
-    legend=blue_legend_style,
+    height=520,
+    margin=dict(l=20, r=20, t=65, b=20),
+    legend=solid_blue_legend,
+    hoverlabel=blue_hoverlabel,
     hovermode="x unified"
 )
 fig2.update_xaxes(gridcolor="#1e293b")
